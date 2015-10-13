@@ -7,13 +7,14 @@ output: html_document
 
 This document contains information regarding the Reproducible Research-Peer Assessment 1.
 
-Load the data.
+## Loading and preprocessing the data
 ```{r}
 ##  Read activity.csv file if it exists
 if (file.exists("activity.csv")) {
         Activity_df <- read.csv("activity.csv")
         }
 ```
+## What is mean total number of steps taken per day?
 
 Calculate the total number of steps taken per day.
 ```{r}
@@ -32,12 +33,52 @@ qplot(Steps_per_day_df$Steps_per_day, geom="histogram")
 Calculate and report the mean and median of the total number of steps per day
 ```{r}
 ##  Ignore missing data
-  mean_steps <- mean(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
-  median_steps <- median(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
+mean_steps <- mean(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
+median_steps <- median(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
 ##  Report mean and median values
 ```
-  The mean of the total number of steps taken is `r mean_steps`.
+The mean of the total number of steps taken is `r mean_steps`.
   
-  The median of the total number of steps taken is `r median_steps`.
+The median of the total number of steps taken is `r median_steps`.
+
+## What is the average daily activity pattern?
+  
+Make a time series plot of the 5-minute interval and the average number of steps taken, averaged across all days
+
+``` {r}
+##  Using dplyr package to group number of steps by time interval
+library(dplyr)
+Activity_df_grouped <- group_by(Activity_df, interval)
+Activity_averages_df <- summarize(Activity_df_grouped, average_number_of_steps = mean(steps, na.rm = TRUE))
+##  Make a line plot using qplot within the ggplot2 package
+qplot(interval, average_number_of_steps, data = Activity_averages_df, geom = "line")
+```
+
+Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+```{r}
+##  Find maximum, the index with this value, and then the interval corresponding to that index
+max_steps <- max(Activity_averages_df$average_number_of_steps)
+index_max <- match(max_steps, Activity_averages_df$average_number_of_steps)
+interval_max <- Activity_averages_df$interval[index_max]
+```
+
+The interval with the maximum number of steps is `r interval_max`.
+
+## Imputing missing values
+
+Calculate and report the total number of missing values in the dataset
+
+```{r}
+##  Using the filter function from dplyr to get rows with missing steps values
+missing_steps_df <- filter(Activity_df, is.na(steps) == TRUE)
+number_missing_values <- nrow(missing_steps_df)
+```
+
+The total number of missing values in the dataset is `r number_missing_values`.
+
+
+
+  
 
 
