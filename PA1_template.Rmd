@@ -5,25 +5,39 @@ date: "October 12, 2015"
 output: html_document
 ---
 
-This is an R Markdown document. This document contains information regarding the Reproducible Research-Peer Assessment 1
+This document contains information regarding the Reproducible Research-Peer Assessment 1.
 
+Load the data.
 ```{r}
 ##  Read activity.csv file if it exists
 if (file.exists("activity.csv")) {
         Activity_df <- read.csv("activity.csv")
         }
-##  Determine the total number of steps taken each day.
+```
+
+Calculate the total number of steps taken per day.
+```{r}
 Steps_per_day <- tapply(Activity_df$steps, Activity_df$date, sum)
 ##  Convert results into a data frame
 Steps_per_day_df <- data.frame(Steps_per_day)
+```
+
+Make a histogram of the total number of steps taken per day
+```{r}
 ##  Make a histogram of results using ggplot2
 library(ggplot2)
 qplot(Steps_per_day_df$Steps_per_day, geom="histogram")
-##  Calculate mean and median steps per day (ignoring missing data)
+```
+
+Calculate and report the mean and median of the total number of steps per day
+```{r}
+##  Ignore missing data
   mean_steps <- mean(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
   median_steps <- median(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
 ##  Report mean and median values
-  mean_steps
-  median_steps
 ```
+  The mean of the total number of steps taken is `r mean_steps`.
+  
+  The median of the total number of steps taken is `r median_steps`.
+
 
