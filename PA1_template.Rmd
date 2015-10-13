@@ -1,25 +1,21 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "PA1_template.Rmd"
+author: "Jeremy Berg"
+date: "October 12, 2015"
+output: html_document
 ---
 
+This is an R Markdown document. This document contains information regarding the Reproducible Research-Peer Assessment 1
 
-## Loading and preprocessing the data
+```{r}
+##  Read activity.csv file if it exists
+if (file.exists("activity.csv")) {
+        Activity_df <- read.csv("activity.csv")
+        }
+##  Determine the total number of steps taken each day.
+Steps_per_day <- tapply(Activity_df$steps, Activity_df$date, sum)
+##  Convert results into a data frame
+Steps_per_day_df <- data.frame(Steps_per_day)
+head(Steps_per_day_df)
+```
 
-
-
-## What is mean total number of steps taken per day?
-
-
-
-## What is the average daily activity pattern?
-
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
