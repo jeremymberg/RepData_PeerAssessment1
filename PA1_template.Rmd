@@ -16,6 +16,14 @@ if (file.exists("activity.csv")) {
 Steps_per_day <- tapply(Activity_df$steps, Activity_df$date, sum)
 ##  Convert results into a data frame
 Steps_per_day_df <- data.frame(Steps_per_day)
-head(Steps_per_day_df)
+##  Make a histogram of results using ggplot2
+library(ggplot2)
+qplot(Steps_per_day_df$Steps_per_day, geom="histogram")
+##  Calculate mean and median steps per day (ignoring missing data)
+  mean_steps <- mean(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
+  median_steps <- median(Steps_per_day_df$Steps_per_day, na.rm = TRUE)
+##  Report mean and median values
+  mean_steps
+  median_steps
 ```
 
